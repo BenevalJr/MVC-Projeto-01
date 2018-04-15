@@ -31,6 +31,30 @@ type
       write SetOnModelChanged;
   end;
 
+  TModelDivide = class(TInterfacedObject, IModel)
+  private
+    FValue1: integer;
+    FValue2: integer;
+    FOnModelChanged: TModelChangedEvent;
+    FSolution: double;
+    procedure SetValue1(const Value: integer);
+    procedure SetValue2(const Value: integer);
+    function GetOnModelChanged: TModelChangedEvent;
+    procedure SetOnModelChanged(Value:
+
+      TModelChangedEvent);
+    procedure Initialize;
+    procedure SetSolution(const Value: double);
+  public
+    constructor Create; reintroduce;
+    function Divide: double;
+    property Value1: integer read FValue1 write SetValue1;
+    property Value2: integer read FValue2 write SetValue2;
+    property Solution: double read FSolution write SetSolution;
+    property OnModelChanged: TModelChangedEvent read GetOnModelChanged
+      write SetOnModelChanged;
+  end;
+
 implementation
 
 { TModelMultiply }
@@ -75,6 +99,53 @@ begin
 end;
 
 procedure TModelMultiply.SetValue2(const Value: integer);
+begin
+  FValue2 := Value;
+end;
+
+{ TModelDivide }
+
+constructor TModelDivide.Create;
+begin
+  Initialize;
+end;
+
+function TModelDivide.Divide: double;
+begin
+  result := Value1 / Value2;
+  Solution := result;
+  if Assigned(OnModelChanged) then
+    OnModelChanged;
+end;
+
+function TModelDivide.GetOnModelChanged: TModelChangedEvent;
+begin
+  result := FOnModelChanged;
+end;
+
+procedure TModelDivide.Initialize;
+begin
+  Value1 := 0;
+  Value2 := 0;
+  Solution := 0;
+end;
+
+procedure TModelDivide.SetOnModelChanged(Value: TModelChangedEvent);
+begin
+  FOnModelChanged := Value;
+end;
+
+procedure TModelDivide.SetSolution(const Value: double);
+begin
+  FSolution := Value;
+end;
+
+procedure TModelDivide.SetValue1(const Value: integer);
+begin
+  FValue1 := Value;
+end;
+
+procedure TModelDivide.SetValue2(const Value: integer);
 begin
   FValue2 := Value;
 end;

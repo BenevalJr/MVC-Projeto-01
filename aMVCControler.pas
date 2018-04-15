@@ -8,27 +8,26 @@ type
   TFormController = class(TInterfacedObject, IController)
   private
     FView: TfrmMVCView;
-    FModel: TModelMultiply;
+    FModelMultiply: TModelMultiply;
+    FModelDivide: TModelDivide;
 
   public
     constructor Create; reintroduce;
     destructor Destroy; override;
     procedure Initialize;
-    procedure Calc;
+    procedure Multiply;
+    procedure Divide;
     class procedure NewInitialize;
   end;
 
 implementation
 
 { TFormController }
-procedure TFormController.Calc;
-begin
-  FModel.Multiply;
-end;
 
 constructor TFormController.Create;
 begin
-  FModel := TModelMultiply.Create;
+  FModelMultiply := TModelMultiply.Create;
+  FModelDivide   := TModelDivide.Create;
   FView := TfrmMVCView.Create(nil);
 end;
 
@@ -38,6 +37,11 @@ begin
   inherited;
 end;
 
+procedure TFormController.Divide;
+begin
+  FModelDivide.Divide;
+end;
+
 procedure TFormController.Initialize;
 begin
   FView.Model := FModel;
@@ -45,6 +49,11 @@ begin
   FView.DoCalc := Calc;
   FView.Initialize;
   FView.ShowModal;
+end;
+
+procedure TFormController.Multiply;
+begin
+  FModelMultiply.Multiply;
 end;
 
 class procedure TFormController.NewInitialize;
